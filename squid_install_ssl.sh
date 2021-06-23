@@ -2,8 +2,8 @@
 
 squid_user=$1
 squid_password=$2
-squid_squid_port=$3
-domain=$4
+squid_squid_port=3128
+domain=$3
 
 yum -y install squid httpd-tools
 htpasswd -b -c /etc/squid/passwd $squid_user $squid_password
@@ -18,7 +18,7 @@ iptables -I INPUT -p tcp --dport $squid_port -j ACCEPT
 
 curl  https://get.acme.sh | sh -s email=$5
 /root/.acme.sh/acme.sh --issue -d $domain --standalone
-/root/.acme.sh/acme.sh --install-cert -d example.com \
+/root/.acme.sh/acme.sh --install-cert -d $domain \
 --key-file       /etc/squid/key.pem  \
 --fullchain-file /etc/squid/cert.pem \
 --reloadcmd     "systemctl restart squid"
