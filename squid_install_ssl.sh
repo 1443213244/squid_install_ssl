@@ -6,15 +6,6 @@ squid_squid_port=$3
 domain=$4
 
 yum -y install squid httpd-tools
-curl  https://get.acme.sh | sh -s email=1443213244@qq.com
-source ~/.bashrc
-/root/.acme.sh/acme.sh --issue -d $domain --standalone
-/root/.acme.sh/acme.sh --install-cert -d example.com \
---key-file       /path/to/keyfile/in/nginx/key.pem  \
---fullchain-file /path/to/fullchain/nginx/cert.pem \
---reloadcmd     "service nginx force-reload"
-
-
 htpasswd -b -c /etc/squid/passwd $squid_user $squid_password
 
 mv /etc/squid/squid.conf /etc/squid/squid.conf.bak
@@ -24,6 +15,13 @@ wget -O /etc/squid/squid.conf  https://raw.githubusercontent.com/1443213244/squi
 iptables -I INPUT -p tcp --dport $squid_port -j ACCEPT
 #/sbin/iptables-save
 /sbin/service iptables save
+
+curl  https://get.acme.sh | sh -s email=$5
+/root/.acme.sh/acme.sh --issue -d $domain --standalone
+/root/.acme.sh/acme.sh --install-cert -d example.com \
+--key-file       /etc/squid/key.pem  \
+--fullchain-file /etc/squid/cert.pem \
+--reloadcmd     "systemctl restart squid"
 
 systemctl restart squid
 systemctl enable squid
