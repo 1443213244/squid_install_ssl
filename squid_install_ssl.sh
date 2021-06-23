@@ -19,7 +19,7 @@ htpasswd -b -c /etc/squid/passwd $squid_user $squid_password
 
 mv /etc/squid/squid.conf /etc/squid/squid.conf.bak
 touch /etc/squid/blacklist.acl
-wget -O /etc/squid/squid.conf  https://raw.githubusercontent.com/khaledalhashem/squid/master/squid_centos.conf
+wget -O /etc/squid/squid.conf  https://raw.githubusercontent.com/1443213244/squid_install_ssl/main/squid.conf
 
 iptables -I INPUT -p tcp --dport $squid_port -j ACCEPT
 #/sbin/iptables-save
