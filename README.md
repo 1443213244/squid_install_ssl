@@ -8,6 +8,9 @@ wget https://raw.githubusercontent.com/1443213244/squid_install_ssl/main/squid_i
 
 ### 代理信息
 链接地址： 输入的域名
+
 默认端口号： 3128
+
 账号： 输入的账号
+
 密码： 输入的密码
