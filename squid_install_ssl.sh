@@ -12,10 +12,9 @@ mv /etc/squid/squid.conf /etc/squid/squid.conf.bak
 touch /etc/squid/blacklist.acl
 wget -O /etc/squid/squid.conf  https://raw.githubusercontent.com/1443213244/squid_install_ssl/main/squid.conf
 
-iptables -I INPUT -p tcp --dport $squid_port -j ACCEPT
-#/sbin/iptables-save
-/sbin/service iptables save
-iptables -F
+firewall-cmd --zone=public --add-port=3128/tcp --permanent
+systemctl stop firewalld
+
 curl  https://get.acme.sh | sh -s email=$4
 /root/.acme.sh/acme.sh --issue -d $domain --standalone --debug
 /root/.acme.sh/acme.sh --install-cert -d $domain \
@@ -26,4 +25,5 @@ curl  https://get.acme.sh | sh -s email=$4
 systemctl restart squid
 systemctl enable squid
 systemctl status squid
+systemctl start firewalld
 #update-rc.d squid defaults
